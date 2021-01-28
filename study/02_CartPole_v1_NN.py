@@ -4,7 +4,6 @@ import gym, time, sys
 from matplotlib import animation
 from tensorflow import keras
 import matplotlib.pyplot as plt
-import sklearn
 
 def play_one_step(env, obs, model, loss_fn):
     with tf.GradientTape() as tape:
@@ -64,7 +63,11 @@ def render_policy_net(model, n_max_steps=200, seed=42):
         if done:
             break
     env.close()
+
     return frames
+def update_scene(num, frames, patch):
+    patch.set_data(frames[num])
+    return patch,
 
 def plot_animation(frames, repeat=False, interval=40):
     fig = plt.figure()
@@ -94,7 +97,7 @@ loss_fn = keras.losses.binary_crossentropy
 
 
 env = gym.make("CartPole-v1")
-env.seed(42);
+env.seed(42)
 
 for iteration in range(n_iterations):
     sys.stdout.write('\r%.1f%s' % ((iteration + 1) / n_iterations * 100, '%' if iteration < n_iterations - 1 else '%\n'))
